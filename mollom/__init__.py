@@ -10,4 +10,5 @@ Mollom -- Implementation of the Mollom protocol, allowing interaction
           with the Mollom service from Python.
 
 """
+import__('pkg_resources').declare_namespace(__name)
 from Mollom import *
