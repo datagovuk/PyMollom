@@ -1,4 +1,0 @@
-include HTTPTransport.py
-include Mollom.py
-include setup.py
-include README.rst
