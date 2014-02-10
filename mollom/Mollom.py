@@ -139,7 +139,7 @@ class MollomAPI(object):
     """
 
     # if there is a callback defined, we fetch from the cache
-    if not self.cacheCallback is None:
+    if not self.cacheCallback:
       _serverListInfo = self.cacheCallback()
     else:
       _serverListInfo = self.__class__.serverListInfo
@@ -166,7 +166,7 @@ class MollomAPI(object):
       try:
         response = self.__s().mollom.getServerList(data)
         _serverListInfo = (datetime.now(), response)
-        if not self.cacheCallback is None:
+        if not self.cacheCallback:
           self.cacheCallback(listInfo = _serverListInfo)
         else:
           self.__class__.serverListInfo = _serverListInfo
@@ -176,7 +176,8 @@ class MollomAPI(object):
       except x.ProtocolError, error:
           pass
 
-    return None
+    # Return an empty list so that it is still iterable
+    return []
 
 
   def __service(self, remote_call, data_, depth=0):
@@ -216,7 +217,7 @@ class MollomAPI(object):
       except x.Fault, fault:
         mf = MollomFault(fault)
         if mf.requiresRefresh():
-          if not self.getServerList() is None:
+          if not self.getServerList():
             return self.__service(remote_call, data_, depth+1)
         elif mf.serverBusy():
           pass
@@ -225,7 +226,7 @@ class MollomAPI(object):
       except x.ProtocolError, error:
         return error
 
-    if not self.getServerList(True) is None:
+    if not self.getServerList(True):
       return self.__service(remote_call, data_, depth+1)
 
     return None
@@ -559,7 +560,7 @@ class MollomBase(object):
     self.api = MollomAPI(publicKey = self.publicKey, privateKey = self.privateKey, timeoutDays = self.timeoutDays, timeoutHours = self.timeoutHours, cacheCallback = self.cacheServerList)
 
   def cacheServerList(self, listInfo = None):
-    if not listInfo is None:
+    if not listInfo:
       self.listInfo = listInfo
     return self.listInfo
 
