@@ -166,7 +166,7 @@ class MollomAPI(object):
       try:
         response = self.__s().mollom.getServerList(data)
         _serverListInfo = (datetime.now(), response)
-        if not self.cacheCallback:
+        if self.cacheCallback:
           self.cacheCallback(listInfo = _serverListInfo)
         else:
           self.__class__.serverListInfo = _serverListInfo
