@@ -139,7 +139,7 @@ class MollomAPI(object):
     """
 
     # if there is a callback defined, we fetch from the cache
-    if not self.cacheCallback:
+    if self.cacheCallback:
       _serverListInfo = self.cacheCallback()
     else:
       _serverListInfo = self.__class__.serverListInfo
